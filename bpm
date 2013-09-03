@@ -1,0 +1,33 @@
+#!/usr/bin/perl -w
+
+use strict;
+use Time::HiRes qw/time/;
+use POSIX;
+
+my ($t0,$t1);
+my $beat = 0;
+
+print <<INTRO;
+
+Welcome to the Beats per Minute (BPM)
+Press the return key for every beat that you encouter.
+
+ (Type 'q' to exit this program)
+
+INTRO
+
+while (<STDIN>) {
+    exit 0 if $_ =~ /^q$/;
+    $beat++;
+    print "[Beat $beat]: ";
+
+    if (! defined $t0){
+        $t0 = time;
+        print "No data yet, listening for next beat...";
+        next;
+    }
+
+    $t1 = time;
+    print ceil (60 / ($t1 - $t0)), " bpm ";
+    $t0 = $t1;
+}
